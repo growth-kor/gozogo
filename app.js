@@ -37,7 +37,8 @@ let settings = {
     showSeconds: true,
     brightness: 100, 
     blur: 0,
-    lastAppliedUrl: null 
+    lastAppliedUrl: null,
+    theme: 'system' 
 };
 
 let currentMediaUrl = null;
@@ -944,4 +945,34 @@ window.addEventListener('keydown', (e) => {
         e.preventDefault();
         toggleFullscreen();
     }
+});
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    } else if (theme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    }
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (settings.theme === 'system') {
+        applyTheme('system');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btnLight = document.getElementById('btn-theme-light');
+    const btnDark = document.getElementById('btn-theme-dark');
+    const btnSystem = document.getElementById('btn-theme-system');
+    
+    if (btnLight) btnLight.addEventListener('click', () => { settings.theme = 'light'; saveSettings(); updateSettingsUI(); });
+    if (btnDark) btnDark.addEventListener('click', () => { settings.theme = 'dark'; saveSettings(); updateSettingsUI(); });
+    if (btnSystem) btnSystem.addEventListener('click', () => { settings.theme = 'system'; saveSettings(); updateSettingsUI(); });
 });
