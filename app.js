@@ -171,7 +171,7 @@ async function initSettings() {
         settings.blur = 0;
     }
 
-        if (settings.dateSize === 15) {
+        if (settings.dateSize < 20) {
         settings.dateSize = 24; 
     }
     if (!settings.clockFont) settings.clockFont = 'Zodiak';
@@ -198,6 +198,11 @@ function updateSettingsUI() {
     toggleSeconds.checked = settings.showSeconds;
     brightnessRange.value = settings.brightness;
     blurRange.value = settings.blur;
+    
+        const clockSizeRange = document.getElementById('clock-size-range');
+    const dateSizeRange = document.getElementById('date-size-range');
+    if (clockSizeRange) clockSizeRange.value = settings.clockSize;
+    if (dateSizeRange) dateSizeRange.value = settings.dateSize;
     
     updateBackgroundFilter();
 }
