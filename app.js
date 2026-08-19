@@ -597,70 +597,37 @@ function hideProgressBar() {
     }, 600);
 }
 
-clockCard.addEventListener('click', async (e) => {
+clockCard.addEventListener('click', (e) => {
     if (currentState !== 'normal') return;
     e.stopPropagation();
 
     currentState = 'soul';
-    mouse.active = false;
 
-    // 1. Initial Jelly Squash & Absorbing into Soul Orb
     clockTimeWrapper.style.filter = 'url(#liquid-goo)';
     gooeyBlur.setAttribute('stdDeviation', '10');
-    clockTime.style.letterSpacing = '-45px';
+    clockTime.style.letterSpacing = '-45px'; 
+
     clockCard.classList.add('shrinking');
 
-    const startX = e.clientX || window.innerWidth / 2;
-    const startY = e.clientY || window.innerHeight / 2;
-
-    soulPos.x = startX;
-    soulPos.y = startY;
-    soulOrb.style.left = startX + 'px';
-    soulOrb.style.top = startY + 'px';
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    soulPos.x = e.clientX;
+    soulPos.y = e.clientY;
+    
+    soulOrb.style.left = `${soulPos.x}px`;
+    soulOrb.style.top = `${soulPos.y}px`;
     soulOrb.style.display = 'block';
     soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(0)';
-
-    // Step 2: Soul Orb expands and gathers energy
+    
     setTimeout(() => {
-        soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(1.2)';
-    }, 200);
-
-    setTimeout(() => {
-        clockContainer.style.display = 'none';
+        if (currentState !== 'soul') return;
+        soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(1)';
     }, 450);
 
-    // Step 3: Natural Liquid Explosion (Burst!)
-    setTimeout(async () => {
-        currentState = 'exploding';
-        soulOrb.style.display = 'none';
-        
-        flashOverlay.style.display = 'block';
-        flashOverlay.classList.add('active');
-
-        spawnLiquidSplash(startX, startY);
-
-        await deleteFileFromDB();
-        settings.lastAppliedUrl = null;
-        saveSettings();
-        
-        bgImage.classList.remove('loaded');
-        bgVideo.classList.remove('loaded');
-    }, 600);
-
-    // Step 4: Smooth Return to Drop Zone
     setTimeout(() => {
-        cleanupMedia();
-        
-        flashOverlay.style.display = 'none';
-        flashOverlay.classList.remove('active');
-        
-        liquidExplosionZone.style.display = 'none';
-        liquidExplosionZone.innerHTML = '';
-        
-        dropZone.classList.add('active');
-        fileInput.value = '';
-        currentState = 'normal';
-    }, 2200);
+        if (currentState !== 'soul') return;
+        clockContainer.style.display = 'none';
+    }, 600);
 });
 
 document.addEventListener('click', async (e) => {
@@ -703,178 +670,6 @@ document.addEventListener('click', async (e) => {
         fileInput.value = '';
         currentState = 'normal';
     }, 2200);
-});
-
-function spawnLiquidSplash(x, y) {
-    liquidExplosionZone.innerHTML = '';
-    liquidExplosionZone.style.display = 'block';
-
-    const dropCount = 35;
-    const drops = [];
-
-    for (let i = 0; i < dropCount; i++) {
-        const drop = document.createElement('div');
-        drop.className = 'liquid-drop';
-        
-        const size = Math.random() * 60 + 20; 
-        drop.style.width = `${size}px`;
-        drop.style.height = `${size}px`;
-        
-        liquidExplosionZone.appendChild(drop);
-
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 35 + 15; 
-
-        drops.push({
-            element: drop,
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            size: size,
-            opacity: 1
-        });
-    }
-
-    let frame = 0;
-    const maxFrames = 180;
-
-    function updateDrops() {
-        if (frame >= maxFrames) return;
-        frame++;
-
-        const gravity = 0.04; 
-        const friction = 0.992; 
-
-        drops.forEach(d => {
-            d.vx *= friction;
-            d.vy *= friction;
-            d.vy += gravity;
-
-            d.x += d.vx;
-            d.y += d.vy;
-
-            d.opacity = 1 - (frame / maxFrames);
-
-            d.element.style.left = `${d.x}px`;
-            d.element.style.top = `${d.y}px`;
-            d.element.style.opacity = d.opacity;
-            d.element.style.transform = `translate3d(-50%, -50%, 0) scale(${d.opacity * 1.3})`;
-        });
-
-        requestAnimationFrame(updateDrops);
-    }
-
-    updateDrops();
-}
-
-document.addEventListener('mousemove', (e) => {
-    if (!mouse.active) return;
-    
-    if (settingsPanel.classList.contains('active') || musicPanel.classList.contains('active')) {
-        return;
-    }
-    
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-});
-
-function physicsLoop() {
-    if (mouse.active) {
-        if (currentState === 'normal') {
-            // Gradually decay targetTransform to 0 (spring physics)
-            targetTransform.x *= 0.85;
-            targetTransform.y *= 0.85;
-            targetTransform.rx *= 0.85;
-            targetTransform.ry *= 0.85;
-
-            const ease = 0.15;
-            currentTransform.x += (targetTransform.x - currentTransform.x) * ease;
-            currentTransform.y += (targetTransform.y - currentTransform.y) * ease;
-            currentTransform.rx += (targetTransform.rx - currentTransform.rx) * ease;
-            currentTransform.ry += (targetTransform.ry - currentTransform.ry) * ease;
-
-            currentTransform.y += (targetTransform.y - currentTransform.y) * ease;
-            currentTransform.rx += (targetTransform.rx - currentTransform.rx) * ease;
-            currentTransform.ry += (targetTransform.ry - currentTransform.ry) * ease;
-
-            const rx = Math.round(currentTransform.x);
-            const ry = Math.round(currentTransform.y);
-
-            clockCard.style.transform = `
-                translate3d(${rx}px, ${ry}px, 0px)
-                scale(1)
-                rotateX(${currentTransform.rx}deg)
-                rotateY(${currentTransform.ry}deg)
-            `;
-
-        } else if (currentState === 'soul') {
-            const delay = (100 - MAGNETIC_STRENGTH) * 0.0015;
-            
-            soulPos.x += (mouse.x - soulPos.x) * delay;
-            soulPos.y += (mouse.y - soulPos.y) * delay;
-
-            soulOrb.style.left = `${soulPos.x}px`;
-            soulOrb.style.top = `${soulPos.y}px`;
-        }
-    }
-
-    requestAnimationFrame(physicsLoop);
-}
-
-function resetTargets() {
-    targetTransform.x = 0;
-    targetTransform.y = 0;
-    targetTransform.rx = 0;
-    targetTransform.ry = 0;
-}
-
-physicsLoop();
-
-function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-        });
-    } else {
-        document.exitFullscreen();
-    }
-}
-
-fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-        fullscreenBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 14h6v6m10-6h-6v6M4 10h6V4m10 6h-6V4"/>
-            </svg>
-        `;
-        fullscreenBtn.classList.add('active');
-    } else {
-        fullscreenBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-            </svg>
-        `;
-        fullscreenBtn.classList.remove('active');
-    }
-});
-
-settingsTrigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    settingsPanel.classList.toggle('active');
-    settingsTrigger.classList.toggle('active');
-    musicPanel.classList.remove('active');
-    musicTrigger.classList.remove('active');
-});
-
-musicTrigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    musicPanel.classList.toggle('active');
-    musicTrigger.classList.toggle('active');
-    settingsPanel.classList.remove('active');
-    settingsTrigger.classList.remove('active');
 });
 
 document.addEventListener('click', (e) => {
@@ -1003,21 +798,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnDark) btnDark.addEventListener('click', () => { settings.theme = 'dark'; saveSettings(); updateSettingsUI(); });
     if (btnSystem) btnSystem.addEventListener('click', () => { settings.theme = 'system'; saveSettings(); updateSettingsUI(); });
 
-    if (clockFont) clockFont.addEventListener('change', (e) => { settings.clockFont = e.target.value; saveSettings(); applyFonts(); });
+    if (clockFont) {
+        clockFont.addEventListener('change', (e) => { settings.clockFont = e.target.value; saveSettings(); applyFonts(); });
+        clockFont.addEventListener('input', (e) => { settings.clockFont = e.target.value; saveSettings(); applyFonts(); });
+    }
     if (clockSize) clockSize.addEventListener('input', (e) => { settings.clockSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
-    if (dateFont) dateFont.addEventListener('change', (e) => { settings.dateFont = e.target.value; saveSettings(); applyFonts(); });
+    if (dateFont) {
+        dateFont.addEventListener('change', (e) => { settings.dateFont = e.target.value; saveSettings(); applyFonts(); });
+        dateFont.addEventListener('input', (e) => { settings.dateFont = e.target.value; saveSettings(); applyFonts(); });
+    }
     if (dateSize) dateSize.addEventListener('input', (e) => { settings.dateSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
 });
 
 function applyFonts() {
     const clockTime = document.getElementById('clock-time');
     const clockDate = document.getElementById('clock-date');
+    const serifFonts = ['Zodiak', 'Cinzel', 'Italiana'];
+    
     if (clockTime) {
-        clockTime.style.fontFamily = settings.clockFont === 'Zodiak' ? "'Zodiak', serif" : `"${settings.clockFont}", sans-serif`;
+        const isSerif = serifFonts.includes(settings.clockFont);
+        clockTime.style.fontFamily = `"${settings.clockFont}", ${isSerif ? 'serif' : 'sans-serif'}`;
         clockTime.style.fontSize = `${settings.clockSize}px`;
     }
     if (clockDate) {
-        clockDate.style.fontFamily = settings.dateFont === 'Zodiak' ? "'Zodiak', serif" : `"${settings.dateFont}", serif`;
+        const isSerif = serifFonts.includes(settings.dateFont);
+        clockDate.style.fontFamily = `"${settings.dateFont}", ${isSerif ? 'serif' : 'sans-serif'}`;
         clockDate.style.fontSize = `${settings.dateSize}px`;
     }
 }
