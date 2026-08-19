@@ -19,12 +19,46 @@
     </div>
 
     <div id="drop-zone" class="active">
-        <div class="drop-card">
-            <p class="drop-subtitle">drag and drop</p>
-            <div class="action-buttons-group">
-                <span class="file-select-btn">Choose File</span>
+        <div class="drop-card-container">
+            <div class="drop-card" id="main-drop-card">
+                <!-- Front Side -->
+                <div class="drop-card-face drop-card-front">
+                    <button type="button" class="card-flip-btn" id="btn-flip-to-back" title="Read letter" aria-label="About Gozogo">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </button>
+                    <p class="drop-subtitle">drag and drop</p>
+                    <div class="action-buttons-group">
+                        <span class="file-select-btn">Choose File</span>
+                    </div>
+                    <input type="file" id="file-input" accept="image/*,video/*" style="display: none;">
+                </div>
+
+                <!-- Back Side (Letter) -->
+                <div class="drop-card-face drop-card-back">
+                    <button type="button" class="card-flip-btn close-btn" id="btn-flip-to-front" title="Back to upload" aria-label="Close letter">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="letter-content">
+                        <h4>Dear Stranger,</h4>
+                        <p>Welcome to <strong>Gozogo</strong>. I created this quiet space so that watching time pass feels like looking at a living piece of art.</p>
+                        <p>Drop any video or photograph you love to make this screen your own. Whenever you need a quiet pause, gently click the clock to awaken its glowing liquid soul, and touch the screen to let it burst into fluid ripples.</p>
+                        <p class="letter-closing">May this little clock bring calm and inspiration to your desk.</p>
+                    </div>
+                    <div class="letter-footer">
+                        <span class="letter-sign">Sincerely,</span>
+                        <a href="https://github.com/growth-kor" target="_blank" rel="noopener noreferrer" class="profile-link" title="Visit growth-kor on GitHub">
+                            <img src="https://github.com/growth-kor.png" alt="growth-kor" class="profile-avatar">
+                        </a>
+                    </div>
+                </div>
             </div>
-            <input type="file" id="file-input" accept="image/*,video/*" style="display: none;">
         </div>
 
         <div id="preset-gallery">

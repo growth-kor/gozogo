@@ -158,6 +158,25 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 3D Card Flip Handler
+    const mainDropCard = document.getElementById('main-drop-card');
+    const btnFlipToBack = document.getElementById('btn-flip-to-back');
+    const btnFlipToFront = document.getElementById('btn-flip-to-front');
+
+    if (btnFlipToBack && mainDropCard) {
+        btnFlipToBack.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mainDropCard.classList.add('flipped');
+        });
+    }
+
+    if (btnFlipToFront && mainDropCard) {
+        btnFlipToFront.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mainDropCard.classList.remove('flipped');
+        });
+    }
+
     const clockSize = document.getElementById('clock-size-range');
     const dateSize = document.getElementById('date-size-range');
     
