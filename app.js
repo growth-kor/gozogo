@@ -40,9 +40,9 @@ let settings = {
     lastAppliedUrl: null,
     theme: 'system',
     clockFont: 'Comico',
-    clockSize: 108,
+    clockSize: 110,
     dateFont: 'Zodiak',
-    dateSize: 15 
+    dateSize: 24 
 };
 
 let currentMediaUrl = null;
@@ -601,33 +601,42 @@ clockCard.addEventListener('click', (e) => {
     if (currentState !== 'normal') return;
     e.stopPropagation();
 
-    currentState = 'soul';
-
-    clockTimeWrapper.style.filter = 'url(#liquid-goo)';
-    gooeyBlur.setAttribute('stdDeviation', '10');
-    clockTime.style.letterSpacing = '-45px'; 
-
-    clockCard.classList.add('shrinking');
-
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    soulPos.x = e.clientX;
-    soulPos.y = e.clientY;
-    
-    soulOrb.style.left = `${soulPos.x}px`;
-    soulOrb.style.top = `${soulPos.y}px`;
-    soulOrb.style.display = 'block';
-    soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(0)';
-    
-    setTimeout(() => {
-        if (currentState !== 'soul') return;
-        soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(1)';
-    }, 450);
+    // 1. First wobble wildly
+    targetTransform.x = (Math.random() - 0.5) * 500;
+    targetTransform.y = (Math.random() - 0.5) * 500;
+    targetTransform.rx = (Math.random() - 0.5) * 100;
+    targetTransform.ry = (Math.random() - 0.5) * 100;
 
     setTimeout(() => {
-        if (currentState !== 'soul') return;
-        clockContainer.style.display = 'none';
-    }, 600);
+        if (currentState !== 'normal') return;
+        currentState = 'soul';
+
+        clockTimeWrapper.style.filter = 'url(#liquid-goo)';
+        gooeyBlur.setAttribute('stdDeviation', '10');
+        clockTime.style.letterSpacing = '-45px'; 
+
+        clockCard.classList.add('shrinking');
+
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        soulPos.x = e.clientX;
+        soulPos.y = e.clientY;
+        
+        soulOrb.style.left = `${soulPos.x}px`;
+        soulOrb.style.top = `${soulPos.y}px`;
+        soulOrb.style.display = 'block';
+        soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(0)';
+        
+        setTimeout(() => {
+            if (currentState !== 'soul') return;
+            soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(1)';
+        }, 450);
+
+        setTimeout(() => {
+            if (currentState !== 'soul') return;
+            clockContainer.style.display = 'none';
+        }, 600);
+    }, 150);
 });
 
 document.addEventListener('click', async (e) => {
@@ -669,7 +678,7 @@ document.addEventListener('click', async (e) => {
         dropZone.classList.add('active');
         fileInput.value = '';
         currentState = 'normal';
-    }, 1800);
+    }, 2200);
 });
 
 function spawnLiquidSplash(x, y) {
@@ -690,7 +699,7 @@ function spawnLiquidSplash(x, y) {
         liquidExplosionZone.appendChild(drop);
 
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 45 + 20; 
+        const speed = Math.random() * 35 + 15; 
 
         drops.push({
             element: drop,
@@ -704,14 +713,14 @@ function spawnLiquidSplash(x, y) {
     }
 
     let frame = 0;
-    const maxFrames = 120;
+    const maxFrames = 180;
 
     function updateDrops() {
         if (frame >= maxFrames) return;
         frame++;
 
-        const gravity = 0.08; 
-        const friction = 0.985; 
+        const gravity = 0.04; 
+        const friction = 0.992; 
 
         drops.forEach(d => {
             d.vx *= friction;
@@ -749,33 +758,18 @@ document.addEventListener('mousemove', (e) => {
 function physicsLoop() {
     if (mouse.active) {
         if (currentState === 'normal') {
-            const cardX = window.innerWidth / 2;
-            const cardY = window.innerHeight / 2;
+            // Gradually decay targetTransform to 0 (spring physics)
+            targetTransform.x *= 0.85;
+            targetTransform.y *= 0.85;
+            targetTransform.rx *= 0.85;
+            targetTransform.ry *= 0.85;
 
-            const dx = mouse.x - cardX;
-            const dy = mouse.y - cardY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < ACTIVE_RADIUS) {
-                const rawRatio = (ACTIVE_RADIUS - distance) / ACTIVE_RADIUS;
-                const power = Math.pow(rawRatio, 2.5);
-
-                const time = Date.now() * 0.005;
-                const swayX = Math.sin(time) * 35 * power;
-                const swayY = Math.cos(time * 0.75) * 32 * power;
-
-                targetTransform.x = Math.round(dx * 0.20 * power + swayX);
-                targetTransform.y = Math.round(dy * 0.20 * power + swayY);
-                
-                targetTransform.rx = (dy / ACTIVE_RADIUS) * 15;
-                targetTransform.ry = -(dx / ACTIVE_RADIUS) * 15;
-
-            } else {
-                resetTargets();
-            }
-
-            const ease = 0.08;
+            const ease = 0.15;
             currentTransform.x += (targetTransform.x - currentTransform.x) * ease;
+            currentTransform.y += (targetTransform.y - currentTransform.y) * ease;
+            currentTransform.rx += (targetTransform.rx - currentTransform.rx) * ease;
+            currentTransform.ry += (targetTransform.ry - currentTransform.ry) * ease;
+
             currentTransform.y += (targetTransform.y - currentTransform.y) * ease;
             currentTransform.rx += (targetTransform.rx - currentTransform.rx) * ease;
             currentTransform.ry += (targetTransform.ry - currentTransform.ry) * ease;

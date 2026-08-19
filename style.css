@@ -343,7 +343,7 @@ body, html {
 #clock-time {
     font-family: 'Comico', 'Syne', sans-serif;
     font-size: 108px;
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: -3px;
     color: var(--text-primary);
     background: none;
@@ -429,7 +429,7 @@ body, html {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #ffffff;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
     z-index: 98;
     pointer-events: none;
     opacity: 0;
@@ -437,18 +437,21 @@ body, html {
 }
 
 #flash-overlay.active {
-    animation: flashExplosion 1.6s cubic-bezier(0.08, 0.8, 0.15, 1) forwards;
+    animation: flashExplosion 2.2s cubic-bezier(0.08, 0.8, 0.15, 1) forwards;
 }
 
 @keyframes flashExplosion {
     0% {
         opacity: 0;
+        transform: scale(0.5);
     }
-    8% {
+    15% {
         opacity: 1;
+        transform: scale(1);
     }
     100% {
         opacity: 0;
+        transform: scale(1.1);
     }
 }
 
