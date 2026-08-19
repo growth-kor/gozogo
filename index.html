@@ -105,6 +105,28 @@
             </div>
         </div>
         <div class="settings-group">
+            <label>Clock Font & Size</label>
+            <select id="select-clock-font" class="styled-select" style="margin-bottom: 8px;">
+                <option value="Comico">Comico (Comic)</option>
+                <option value="Zodiak">Zodiak (Serif)</option>
+                <option value="Space Grotesk">Space Grotesk</option>
+                <option value="Syne">Syne</option>
+                <option value="Outfit">Outfit</option>
+            </select>
+            <input type="range" id="clock-size-range" min="40" max="250" value="108">
+        </div>
+        <div class="settings-group">
+            <label>Date Font & Size</label>
+            <select id="select-date-font" class="styled-select" style="margin-bottom: 8px;">
+                <option value="Zodiak">Zodiak (Serif)</option>
+                <option value="Comico">Comico (Comic)</option>
+                <option value="Space Grotesk">Space Grotesk</option>
+                <option value="Syne">Syne</option>
+                <option value="Outfit">Outfit</option>
+            </select>
+            <input type="range" id="date-size-range" min="10" max="40" value="15">
+        </div>
+        <div class="settings-group">
             <label>Time Format</label>
             <div class="toggle-btn-group">
                 <button id="btn-format-24" class="active">24H</button>
