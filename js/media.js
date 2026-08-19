@@ -105,6 +105,20 @@ function applyDirectUrl(url) {
     settings.lastAppliedUrl = url;
     saveSettings();
 
+    if (url === 'black') {
+        bgVideo.style.display = 'none';
+        bgImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3C/svg%3E";
+        bgImage.style.display = 'block';
+        
+        bgImage.onload = () => {
+            bgImage.classList.add('loaded');
+            updateBackgroundFilter();
+            transitionToWallpaper();
+            hideProgressBar();
+        };
+        return;
+    }
+
     const isVideo = url.endsWith('.mp4') || url.endsWith('.webm');
 
     if (isVideo) {
