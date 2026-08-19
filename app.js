@@ -672,6 +672,178 @@ document.addEventListener('click', async (e) => {
     }, 2200);
 });
 
+function spawnLiquidSplash(x, y) {
+    liquidExplosionZone.innerHTML = '';
+    liquidExplosionZone.style.display = 'block';
+
+    const dropCount = 35;
+    const drops = [];
+
+    for (let i = 0; i < dropCount; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'liquid-drop';
+        
+        const size = Math.random() * 60 + 20; 
+        drop.style.width = `${size}px`;
+        drop.style.height = `${size}px`;
+        
+        liquidExplosionZone.appendChild(drop);
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 35 + 15; 
+
+        drops.push({
+            element: drop,
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: size,
+            opacity: 1
+        });
+    }
+
+    let frame = 0;
+    const maxFrames = 180;
+
+    function updateDrops() {
+        if (frame >= maxFrames) return;
+        frame++;
+
+        const gravity = 0.04; 
+        const friction = 0.992; 
+
+        drops.forEach(d => {
+            d.vx *= friction;
+            d.vy *= friction;
+            d.vy += gravity;
+
+            d.x += d.vx;
+            d.y += d.vy;
+
+            d.opacity = 1 - (frame / maxFrames);
+
+            d.element.style.left = `${d.x}px`;
+            d.element.style.top = `${d.y}px`;
+            d.element.style.opacity = d.opacity;
+            d.element.style.transform = `translate3d(-50%, -50%, 0) scale(${d.opacity * 1.3})`;
+        });
+
+        requestAnimationFrame(updateDrops);
+    }
+
+    updateDrops();
+}
+
+document.addEventListener('mousemove', (e) => {
+    if (!mouse.active) return;
+    
+    if (settingsPanel.classList.contains('active') || musicPanel.classList.contains('active')) {
+        return;
+    }
+    
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+function physicsLoop() {
+    if (mouse.active) {
+        if (currentState === 'normal') {
+            // Gradually decay targetTransform to 0 (spring physics)
+            targetTransform.x *= 0.85;
+            targetTransform.y *= 0.85;
+            targetTransform.rx *= 0.85;
+            targetTransform.ry *= 0.85;
+
+            const ease = 0.15;
+            currentTransform.x += (targetTransform.x - currentTransform.x) * ease;
+            currentTransform.y += (targetTransform.y - currentTransform.y) * ease;
+            currentTransform.rx += (targetTransform.rx - currentTransform.rx) * ease;
+            currentTransform.ry += (targetTransform.ry - currentTransform.ry) * ease;
+
+            currentTransform.y += (targetTransform.y - currentTransform.y) * ease;
+            currentTransform.rx += (targetTransform.rx - currentTransform.rx) * ease;
+            currentTransform.ry += (targetTransform.ry - currentTransform.ry) * ease;
+
+            const rx = Math.round(currentTransform.x);
+            const ry = Math.round(currentTransform.y);
+
+            clockCard.style.transform = `
+                translate3d(${rx}px, ${ry}px, 0px)
+                scale(1)
+                rotateX(${currentTransform.rx}deg)
+                rotateY(${currentTransform.ry}deg)
+            `;
+
+        } else if (currentState === 'soul') {
+            const delay = (100 - MAGNETIC_STRENGTH) * 0.0015;
+            
+            soulPos.x += (mouse.x - soulPos.x) * delay;
+            soulPos.y += (mouse.y - soulPos.y) * delay;
+
+            soulOrb.style.left = `${soulPos.x}px`;
+            soulOrb.style.top = `${soulPos.y}px`;
+        }
+    }
+
+    requestAnimationFrame(physicsLoop);
+}
+
+function resetTargets() {
+    targetTransform.x = 0;
+    targetTransform.y = 0;
+    targetTransform.rx = 0;
+    targetTransform.ry = 0;
+}
+
+physicsLoop();
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+        fullscreenBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14h6v6m10-6h-6v6M4 10h6V4m10 6h-6V4"/>
+            </svg>
+        `;
+        fullscreenBtn.classList.add('active');
+    } else {
+        fullscreenBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            </svg>
+        `;
+        fullscreenBtn.classList.remove('active');
+    }
+});
+
+settingsTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    settingsPanel.classList.toggle('active');
+    settingsTrigger.classList.toggle('active');
+    musicPanel.classList.remove('active');
+    musicTrigger.classList.remove('active');
+});
+
+musicTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    musicPanel.classList.toggle('active');
+    musicTrigger.classList.toggle('active');
+    settingsPanel.classList.remove('active');
+    settingsTrigger.classList.remove('active');
+});
+
 document.addEventListener('click', (e) => {
     if (!settingsPanel.contains(e.target) && e.target !== settingsTrigger &&
         !musicPanel.contains(e.target) && e.target !== musicTrigger) {
