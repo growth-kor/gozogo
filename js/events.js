@@ -158,21 +158,27 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 3D Card Flip Handler
+    // 3D Card Flip Handler (Click anywhere on card to flip)
     const mainDropCard = document.getElementById('main-drop-card');
-    const btnFlipToBack = document.getElementById('btn-flip-to-back');
-    const btnFlipToFront = document.getElementById('btn-flip-to-front');
+    const dropCardFront = document.querySelector('.drop-card-front');
+    const dropCardBack = document.querySelector('.drop-card-back');
 
-    if (btnFlipToBack && mainDropCard) {
-        btnFlipToBack.addEventListener('click', (e) => {
-            e.stopPropagation();
+    if (mainDropCard && dropCardFront) {
+        dropCardFront.addEventListener('click', (e) => {
+            // Ignore if clicking choose file button or input
+            if (e.target.closest('.file-select-btn') || e.target.closest('input')) {
+                return;
+            }
             mainDropCard.classList.add('flipped');
         });
     }
 
-    if (btnFlipToFront && mainDropCard) {
-        btnFlipToFront.addEventListener('click', (e) => {
-            e.stopPropagation();
+    if (mainDropCard && dropCardBack) {
+        dropCardBack.addEventListener('click', (e) => {
+            // Ignore if clicking github profile link
+            if (e.target.closest('.profile-link')) {
+                return;
+            }
             mainDropCard.classList.remove('flipped');
         });
     }
