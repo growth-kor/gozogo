@@ -38,7 +38,11 @@ let settings = {
     brightness: 100, 
     blur: 0,
     lastAppliedUrl: null,
-    theme: 'system' 
+    theme: 'system',
+    clockFont: 'Comico',
+    clockSize: 108,
+    dateFont: 'Zodiak',
+    dateSize: 15 
 };
 
 let currentMediaUrl = null;
@@ -665,7 +669,7 @@ document.addEventListener('click', async (e) => {
         dropZone.classList.add('active');
         fileInput.value = '';
         currentState = 'normal';
-    }, 1150);
+    }, 1800);
 });
 
 function spawnLiquidSplash(x, y) {
@@ -700,14 +704,14 @@ function spawnLiquidSplash(x, y) {
     }
 
     let frame = 0;
-    const maxFrames = 70;
+    const maxFrames = 120;
 
     function updateDrops() {
         if (frame >= maxFrames) return;
         frame++;
 
         const gravity = 0.08; 
-        const friction = 0.975; 
+        const friction = 0.985; 
 
         drops.forEach(d => {
             d.vx *= friction;
@@ -967,12 +971,35 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
     }
 });
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const btnLight = document.getElementById('btn-theme-light');
     const btnDark = document.getElementById('btn-theme-dark');
     const btnSystem = document.getElementById('btn-theme-system');
+    const clockFont = document.getElementById('select-clock-font');
+    const clockSize = document.getElementById('clock-size-range');
+    const dateFont = document.getElementById('select-date-font');
+    const dateSize = document.getElementById('date-size-range');
     
     if (btnLight) btnLight.addEventListener('click', () => { settings.theme = 'light'; saveSettings(); updateSettingsUI(); });
     if (btnDark) btnDark.addEventListener('click', () => { settings.theme = 'dark'; saveSettings(); updateSettingsUI(); });
     if (btnSystem) btnSystem.addEventListener('click', () => { settings.theme = 'system'; saveSettings(); updateSettingsUI(); });
+
+    if (clockFont) clockFont.addEventListener('change', (e) => { settings.clockFont = e.target.value; saveSettings(); applyFonts(); });
+    if (clockSize) clockSize.addEventListener('input', (e) => { settings.clockSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
+    if (dateFont) dateFont.addEventListener('change', (e) => { settings.dateFont = e.target.value; saveSettings(); applyFonts(); });
+    if (dateSize) dateSize.addEventListener('input', (e) => { settings.dateSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
 });
+
+function applyFonts() {
+    const clockTime = document.getElementById('clock-time');
+    const clockDate = document.getElementById('clock-date');
+    if (clockTime) {
+        clockTime.style.fontFamily = `"${settings.clockFont}", sans-serif`;
+        clockTime.style.fontSize = `${settings.clockSize}px`;
+    }
+    if (clockDate) {
+        clockDate.style.fontFamily = `"${settings.dateFont}", serif`;
+        clockDate.style.fontSize = `${settings.dateSize}px`;
+    }
+}

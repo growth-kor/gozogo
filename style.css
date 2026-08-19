@@ -437,7 +437,7 @@ body, html {
 }
 
 #flash-overlay.active {
-    animation: flashExplosion 0.85s cubic-bezier(0.08, 0.8, 0.15, 1) forwards;
+    animation: flashExplosion 1.6s cubic-bezier(0.08, 0.8, 0.15, 1) forwards;
 }
 
 @keyframes flashExplosion {
@@ -682,4 +682,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 [data-theme="light"] #bg-overlay {
     background: rgba(255, 255, 255, 0.25);
+}
+
+.styled-select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+[data-theme="light"] .styled-select {
+    background: rgba(0, 0, 0, 0.05);
 }
