@@ -107,6 +107,7 @@ body, html {
     flex-direction: column;    
     justify-content: center;
     align-items: center;
+    gap: 50px;
     background: transparent;
     transition: opacity 0.6s ease;
     pointer-events: none;
@@ -132,9 +133,10 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 50px;
     justify-content: center;
     transition: var(--transition-smooth);
-    box-shadow: none;
+    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     overflow: hidden;
@@ -173,25 +175,30 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 50px;
     margin-top: 10px;
 }
 
 .file-select-btn {
     display: inline-block;
-    padding: 16px 38px;
+    padding: 14px 40px;
     border-radius: 35px;
-    background: var(--text-primary);
-    color: var(--bg-dark);
-    font-weight: 600;
-    font-size: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 1px;
     cursor: pointer;
-    letter-spacing: -0.2px;
-    transition: var(--transition-smooth);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
 }
 
 .file-select-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
 }
 
 #preset-gallery {
@@ -220,6 +227,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 50px;
     justify-content: center;
 }
 
@@ -325,6 +333,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 50px;
     pointer-events: none;
     perspective: 1000px;
     overflow: visible !important;
@@ -337,10 +346,11 @@ body, html {
     border: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    box-shadow: none;
+    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.03);
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 50px;
     justify-content: center;
     pointer-events: auto;
     cursor: pointer;
@@ -471,6 +481,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 50px;
     cursor: pointer;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -590,6 +601,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 50px;
     gap: 10px;
     transition: var(--transition-smooth);
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.01);
@@ -722,6 +734,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 50px;
 }
 .custom-select-trigger::after {
     content: "▼";
