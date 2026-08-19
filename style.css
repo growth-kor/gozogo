@@ -350,7 +350,7 @@ body, html {
 
 #clock-date {
     font-family: 'Zodiak', serif;
-    font-size: 15px;
+    font-size: 24px;
     font-weight: 500;
     letter-spacing: 5px;
     text-transform: uppercase;
@@ -528,7 +528,7 @@ body, html {
 }
 
 #settings-panel h3, #music-panel h3 {
-    font-size: 15px;
+    font-size: 24px;
     font-weight: 600;
     margin-bottom: 22px;
     letter-spacing: -0.2px;
