@@ -107,7 +107,7 @@ body, html {
     flex-direction: column;    
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 40px;
     background: transparent;
     transition: opacity 0.6s ease;
     pointer-events: none;
@@ -126,79 +126,94 @@ body, html {
     position: relative;
     z-index: 2;
     width: 380px;
-    height: 240px;
-    background: #0a0a0c;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
+    height: 230px;
+    background: #09090b;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
     justify-content: center;
-    transition: var(--transition-smooth);
-    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    transform: translate3d(0, 0, 0);
+    will-change: transform, border-color, box-shadow;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
     overflow: hidden;
 }
 
 #drop-zone.dragover .drop-card, .drop-card:hover {
-    transform: scale(1.02);
-    border-color: rgba(255, 255, 255, 0.5);
-    background: #0a0a0c;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    transform: translate3d(0, -3px, 0) scale(1.015);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.08), 0 25px 60px rgba(0, 0, 0, 0.9);
 }
 
 .drop-subtitle {
     font-family: 'Zodiak', serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 400;
-    letter-spacing: 4px;
-    color: var(--text-primary);
-    margin-bottom: 25px;
+    letter-spacing: 5px;
+    color: #ffffff;
+    margin-bottom: 22px;
     pointer-events: none;
     text-transform: lowercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 #drop-zone.dragover .drop-subtitle {
     font-family: 'Zodiak', serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 400;
-    letter-spacing: 4px;
-    color: var(--text-primary);
-    margin-bottom: 25px;
+    letter-spacing: 5px;
+    color: #ffffff;
+    margin-bottom: 22px;
     pointer-events: none;
     text-transform: lowercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 .action-buttons-group {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 50px;
-    margin-top: 10px;
 }
 
 .file-select-btn {
+    font-family: 'Zodiak', serif;
     display: inline-block;
-    padding: 14px 40px;
-    border-radius: 35px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: var(--text-primary);
-    font-weight: 500;
+    padding: 12px 36px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    font-weight: 400;
     font-size: 15px;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
+    transform: translate3d(0, 0, 0);
+    will-change: transform, background, border-color, box-shadow;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .file-select-btn:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+    transform: translate3d(0, -2px, 0);
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.12);
 }
 
 #preset-gallery {
@@ -481,7 +496,6 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 50px;
     cursor: pointer;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -784,12 +798,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: #fff;
 }
 
-/* Unified Panel Typography */
+/* Unified Panel Typography (Zodiak Luxury Aesthetic) */
 #settings-panel, #music-panel,
 #settings-panel h3, #music-panel h3,
 #settings-panel label, #music-panel label,
 #settings-panel button, #music-panel button,
 #settings-panel .custom-select-trigger, #music-panel .music-selector,
 #settings-panel input, #music-panel input {
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
+    font-family: 'Zodiak', serif !important;
 }
