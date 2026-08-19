@@ -615,8 +615,8 @@ clockCard.addEventListener('click', async (e) => {
 
     soulPos.x = startX;
     soulPos.y = startY;
-    soulOrb.style.left = ;
-    soulOrb.style.top = ;
+    soulOrb.style.left = startX + 'px';
+    soulOrb.style.top = startY + 'px';
     soulOrb.style.display = 'block';
     soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(0)';
 
@@ -1018,13 +1018,6 @@ function applyFonts() {
     }
     if (clockDate) {
         clockDate.style.fontFamily = settings.dateFont === 'Zodiak' ? "'Zodiak', serif" : `"${settings.dateFont}", serif`;
-        clockDate.style.fontSize = `${settings.dateSize}px`;
-    }
-}", sans-serif`;
-        clockTime.style.fontSize = `${settings.clockSize}px`;
-    }
-    if (clockDate) {
-        clockDate.style.fontFamily = `"${settings.dateFont}", serif`;
         clockDate.style.fontSize = `${settings.dateSize}px`;
     }
 }
