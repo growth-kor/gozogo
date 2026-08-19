@@ -20,7 +20,7 @@
   font-style: normal;
 }
 :root {
-    --bg-dark: #0a0a0c;
+    --bg-dark: #000000;
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.65);
     --glass-bg: rgba(255, 255, 255, 0.015);
@@ -30,7 +30,7 @@
 }
 
 [data-theme="light"] {
-    --bg-dark: #f0f2f5;
+    --bg-dark: #000000;
     --text-primary: #1a1a1c;
     --text-secondary: rgba(0, 0, 0, 0.65);
     --glass-bg: rgba(255, 255, 255, 0.6);
@@ -97,20 +97,20 @@ body, html {
 }
 
 #drop-zone {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 10;
+    position: absolute;
+    width: 380px;
+    height: 240px;
+    background: #0a0a0c;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
     display: flex;
-    flex-direction: column;    
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 30px;                 
-    pointer-events: auto;
-    background-color: transparent;
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 #drop-zone:not(.active) {
@@ -143,21 +143,25 @@ body, html {
 }
 
 .drop-subtitle {
-    font-size: 24px;
-    font-weight: 500;
+    font-family: 'Zodiak', serif;
+    font-size: 20px;
+    font-weight: 400;
     letter-spacing: 4px;
-    color: var(--text-primary); 
+    color: var(--text-primary);
+    margin-bottom: 25px;
+    pointer-events: none;
     text-transform: lowercase;
-    margin-bottom: 40px;
-    transition: var(--transition-smooth);
-    opacity: 0.95;
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
 #drop-zone.dragover .drop-subtitle {
+    font-family: 'Zodiak', serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 4px;
     color: var(--text-primary);
-    letter-spacing: 6px;
-    opacity: 1;
+    margin-bottom: 25px;
+    pointer-events: none;
+    text-transform: lowercase;
 }
 
 .action-buttons-group {
@@ -444,38 +448,6 @@ body, html {
     transform: translate3d(-50%, -50%, 0);
 }
 
-#flash-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
-    z-index: 98;
-    pointer-events: none;
-    opacity: 0;
-    will-change: opacity;
-}
-
-#flash-overlay.active {
-    animation: flashExplosion 2.2s cubic-bezier(0.08, 0.8, 0.15, 1) forwards;
-}
-
-@keyframes flashExplosion {
-    0% {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-    15% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.1);
-    }
-}
-
 #controls-bar {
     position: fixed;
     bottom: 25px;
@@ -723,4 +695,72 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 [data-theme="light"] .styled-select {
     background: rgba(0, 0, 0, 0.05);
+}
+
+
+/* Custom Select Dropdown */
+.custom-select {
+    position: relative;
+    width: 100%;
+    margin-bottom: 8px;
+    user-select: none;
+}
+.custom-select-trigger {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.custom-select-trigger::after {
+    content: ▼;
+    font-size: 10px;
+    opacity: 0.5;
+}
+.custom-select.open .custom-select-trigger {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    background: rgba(15, 15, 18, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 100;
+    display: none;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    max-height: 250px;
+    overflow-y: auto;
+}
+.custom-select.open .custom-select-options {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+.custom-option {
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.15s ease;
+}
+.custom-option:hover, .custom-option.selected {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
 }

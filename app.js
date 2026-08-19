@@ -14,7 +14,6 @@ const gooeyBlur = document.getElementById('gooey-blur');
 
 const soulOrb = document.getElementById('soul-orb');
 const liquidExplosionZone = document.getElementById('liquid-explosion-zone');
-const flashOverlay = document.getElementById('flash-overlay');
 
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 const settingsTrigger = document.getElementById('settings-trigger');
@@ -172,6 +171,11 @@ async function initSettings() {
         settings.blur = 0;
     }
 
+        if (settings.dateSize === 15) {
+        settings.dateSize = 24; 
+    }
+    if (!settings.clockFont) settings.clockFont = 'Zodiak';
+    if (!settings.dateFont) settings.dateFont = 'Zodiak';
     updateSettingsUI();
 
     const savedFile = await loadFileFromDB();
@@ -645,8 +649,8 @@ document.addEventListener('click', async (e) => {
     const startY = e.clientY;
 
     soulOrb.style.display = 'none';
-    flashOverlay.style.display = 'block';
-    flashOverlay.classList.add('active');
+    
+    
 
     spawnLiquidSplash(startX, startY);
 
@@ -660,8 +664,8 @@ document.addEventListener('click', async (e) => {
     setTimeout(() => {
         cleanupMedia();
         
-        flashOverlay.style.display = 'none';
-        flashOverlay.classList.remove('active');
+        
+        
         
         liquidExplosionZone.style.display = 'none';
         liquidExplosionZone.innerHTML = '';
@@ -958,27 +962,71 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const btnLight = document.getElementById('btn-theme-light');
-    const btnDark = document.getElementById('btn-theme-dark');
-    const btnSystem = document.getElementById('btn-theme-system');
-    const clockFont = document.getElementById('select-clock-font');
     const clockSize = document.getElementById('clock-size-range');
-    const dateFont = document.getElementById('select-date-font');
     const dateSize = document.getElementById('date-size-range');
     
-    if (btnLight) btnLight.addEventListener('click', () => { settings.theme = 'light'; saveSettings(); updateSettingsUI(); });
-    if (btnDark) btnDark.addEventListener('click', () => { settings.theme = 'dark'; saveSettings(); updateSettingsUI(); });
-    if (btnSystem) btnSystem.addEventListener('click', () => { settings.theme = 'system'; saveSettings(); updateSettingsUI(); });
+    // Custom Font Select Logic
+    function setupCustomSelect(selectId, settingKey) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+        
+        const trigger = select.querySelector('.custom-select-trigger');
+        const options = select.querySelectorAll('.custom-option');
+        
+        trigger.textContent = settings[settingKey] || 'Zodiak';
+        options.forEach(opt => {
+            if (opt.getAttribute('data-value') === settings[settingKey]) {
+                opt.classList.add('selected');
+            }
+        });
 
-    if (clockFont) {
-        clockFont.addEventListener('change', (e) => { settings.clockFont = e.target.value; saveSettings(); applyFonts(); });
-        clockFont.addEventListener('input', (e) => { settings.clockFont = e.target.value; saveSettings(); applyFonts(); });
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.custom-select').forEach(s => {
+                if (s !== select) s.classList.remove('open');
+            });
+            select.classList.toggle('open');
+        });
+
+        options.forEach(option => {
+            option.addEventListener('mouseenter', () => {
+                const previewVal = option.getAttribute('data-value');
+                const targetEl = settingKey === 'clockFont' ? document.getElementById('clock-time') : document.getElementById('clock-date');
+                const serifFonts = ['Zodiak', 'Cinzel', 'Italiana'];
+                const isSerif = serifFonts.includes(previewVal);
+                if (targetEl) {
+                    targetEl.style.fontFamily = `"${previewVal}", ${isSerif ? 'serif' : 'sans-serif'}`;
+                }
+            });
+
+            option.addEventListener('mouseleave', () => {
+                applyFonts(); 
+            });
+
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const val = option.getAttribute('data-value');
+                settings[settingKey] = val;
+                
+                trigger.textContent = val;
+                options.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                select.classList.remove('open');
+                saveSettings();
+                applyFonts();
+            });
+        });
     }
+
+    setupCustomSelect('select-clock-font-custom', 'clockFont');
+    setupCustomSelect('select-date-font-custom', 'dateFont');
+
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+    });
+
     if (clockSize) clockSize.addEventListener('input', (e) => { settings.clockSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
-    if (dateFont) {
-        dateFont.addEventListener('change', (e) => { settings.dateFont = e.target.value; saveSettings(); applyFonts(); });
-        dateFont.addEventListener('input', (e) => { settings.dateFont = e.target.value; saveSettings(); applyFonts(); });
-    }
     if (dateSize) dateSize.addEventListener('input', (e) => { settings.dateSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
 });
 
