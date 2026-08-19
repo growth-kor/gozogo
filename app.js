@@ -39,7 +39,7 @@ let settings = {
     blur: 0,
     lastAppliedUrl: null,
     theme: 'system',
-    clockFont: 'Comico',
+    clockFont: 'Zodiak',
     clockSize: 110,
     dateFont: 'Zodiak',
     dateSize: 24 
@@ -597,46 +597,70 @@ function hideProgressBar() {
     }, 600);
 }
 
-clockCard.addEventListener('click', (e) => {
+clockCard.addEventListener('click', async (e) => {
     if (currentState !== 'normal') return;
     e.stopPropagation();
 
-    // 1. First wobble wildly
-    targetTransform.x = (Math.random() - 0.5) * 500;
-    targetTransform.y = (Math.random() - 0.5) * 500;
-    targetTransform.rx = (Math.random() - 0.5) * 100;
-    targetTransform.ry = (Math.random() - 0.5) * 100;
+    currentState = 'soul';
+    mouse.active = false;
+
+    // 1. Initial Jelly Squash & Absorbing into Soul Orb
+    clockTimeWrapper.style.filter = 'url(#liquid-goo)';
+    gooeyBlur.setAttribute('stdDeviation', '10');
+    clockTime.style.letterSpacing = '-45px';
+    clockCard.classList.add('shrinking');
+
+    const startX = e.clientX || window.innerWidth / 2;
+    const startY = e.clientY || window.innerHeight / 2;
+
+    soulPos.x = startX;
+    soulPos.y = startY;
+    soulOrb.style.left = ;
+    soulOrb.style.top = ;
+    soulOrb.style.display = 'block';
+    soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(0)';
+
+    // Step 2: Soul Orb expands and gathers energy
+    setTimeout(() => {
+        soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(1.2)';
+    }, 200);
 
     setTimeout(() => {
-        if (currentState !== 'normal') return;
-        currentState = 'soul';
+        clockContainer.style.display = 'none';
+    }, 450);
 
-        clockTimeWrapper.style.filter = 'url(#liquid-goo)';
-        gooeyBlur.setAttribute('stdDeviation', '10');
-        clockTime.style.letterSpacing = '-45px'; 
-
-        clockCard.classList.add('shrinking');
-
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        soulPos.x = e.clientX;
-        soulPos.y = e.clientY;
+    // Step 3: Natural Liquid Explosion (Burst!)
+    setTimeout(async () => {
+        currentState = 'exploding';
+        soulOrb.style.display = 'none';
         
-        soulOrb.style.left = `${soulPos.x}px`;
-        soulOrb.style.top = `${soulPos.y}px`;
-        soulOrb.style.display = 'block';
-        soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(0)';
-        
-        setTimeout(() => {
-            if (currentState !== 'soul') return;
-            soulOrb.style.transform = 'translate3d(-50%, -50%, 0) scale(1)';
-        }, 450);
+        flashOverlay.style.display = 'block';
+        flashOverlay.classList.add('active');
 
-        setTimeout(() => {
-            if (currentState !== 'soul') return;
-            clockContainer.style.display = 'none';
-        }, 600);
-    }, 150);
+        spawnLiquidSplash(startX, startY);
+
+        await deleteFileFromDB();
+        settings.lastAppliedUrl = null;
+        saveSettings();
+        
+        bgImage.classList.remove('loaded');
+        bgVideo.classList.remove('loaded');
+    }, 600);
+
+    // Step 4: Smooth Return to Drop Zone
+    setTimeout(() => {
+        cleanupMedia();
+        
+        flashOverlay.style.display = 'none';
+        flashOverlay.classList.remove('active');
+        
+        liquidExplosionZone.style.display = 'none';
+        liquidExplosionZone.innerHTML = '';
+        
+        dropZone.classList.add('active');
+        fileInput.value = '';
+        currentState = 'normal';
+    }, 2200);
 });
 
 document.addEventListener('click', async (e) => {
@@ -989,7 +1013,14 @@ function applyFonts() {
     const clockTime = document.getElementById('clock-time');
     const clockDate = document.getElementById('clock-date');
     if (clockTime) {
-        clockTime.style.fontFamily = `"${settings.clockFont}", sans-serif`;
+        clockTime.style.fontFamily = settings.clockFont === 'Zodiak' ? "'Zodiak', serif" : `"${settings.clockFont}", sans-serif`;
+        clockTime.style.fontSize = `${settings.clockSize}px`;
+    }
+    if (clockDate) {
+        clockDate.style.fontFamily = settings.dateFont === 'Zodiak' ? "'Zodiak', serif" : `"${settings.dateFont}", serif`;
+        clockDate.style.fontSize = `${settings.dateSize}px`;
+    }
+}", sans-serif`;
         clockTime.style.fontSize = `${settings.clockSize}px`;
     }
     if (clockDate) {
