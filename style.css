@@ -124,8 +124,8 @@ body, html {
 
 .drop-card-container {
     perspective: 1200px;
-    width: 400px;
-    height: 250px;
+    width: 470px;
+    height: 280px;
     position: relative;
     z-index: 2;
 }
@@ -178,7 +178,7 @@ body, html {
 
 .drop-card-back {
     transform: rotateY(180deg);
-    padding: 20px 24px 16px 24px;
+    padding: 24px 30px 20px 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -190,8 +190,8 @@ body, html {
     position: absolute;
     top: 14px;
     right: 14px;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -219,19 +219,19 @@ body, html {
 }
 
 .letter-content h4 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
-    margin: 0 0 8px 0;
+    margin: 0 0 10px 0;
     color: #ffffff;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
 }
 
 .letter-content p {
-    font-size: 11.5px;
-    line-height: 1.5;
-    margin: 0 0 6px 0;
-    color: rgba(255, 255, 255, 0.72);
-    letter-spacing: 0.2px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 8px 0;
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.25px;
 }
 
 .letter-content p strong {
@@ -241,8 +241,8 @@ body, html {
 
 .letter-content .letter-closing {
     font-style: italic;
-    color: rgba(255, 255, 255, 0.85);
-    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 6px;
 }
 
 /* Letter Footer */
@@ -271,8 +271,8 @@ body, html {
 }
 
 .profile-avatar {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 1.5px solid rgba(255, 255, 255, 0.4);
     transition: all 0.25s ease;
