@@ -341,17 +341,17 @@ body, html {
 
 #clock-card {
     position: relative;
-    padding: 50px 80px;
-    background: transparent;
-    border: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.03);
+    padding: 20px 40px;
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
     justify-content: center;
+    gap: 0 !important;
     pointer-events: auto;
     cursor: pointer;
     transition: transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
@@ -366,7 +366,7 @@ body, html {
     text-transform: uppercase;
     color: var(--text-primary); 
     opacity: 0.95;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     text-shadow: 0 3px 15px rgba(0, 0, 0, 0.95);
     transition: transform 0.05s linear, opacity 0.15s ease;
 }
@@ -492,9 +492,10 @@ body, html {
 }
 
 #controls-bar:hover .control-btn, 
-.control-btn.active,
-#settings-panel.active ~ #controls-bar .control-btn,
-#music-panel.active ~ #controls-bar .control-btn {
+#settings-trigger.active,
+#music-trigger.active,
+#settings-panel.active ~ #controls-bar #settings-trigger,
+#music-panel.active ~ #controls-bar #music-trigger {
     opacity: 0.85;
 }
 
@@ -781,4 +782,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .custom-option:hover, .custom-option.selected {
     background: rgba(255, 255, 255, 0.15);
     color: #fff;
+}
+
+/* Unified Panel Typography */
+#settings-panel, #music-panel,
+#settings-panel h3, #music-panel h3,
+#settings-panel label, #music-panel label,
+#settings-panel button, #music-panel button,
+#settings-panel .custom-select-trigger, #music-panel .music-selector,
+#settings-panel input, #music-panel input {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
 }

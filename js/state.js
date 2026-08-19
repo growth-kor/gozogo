@@ -34,6 +34,7 @@ const musicReverb = document.getElementById('music-reverb');
 let settings = {
     use24h: true,
     showSeconds: true,
+    clockGap: 6,
     brightness: 100, 
     blur: 0,
     lastAppliedUrl: null,

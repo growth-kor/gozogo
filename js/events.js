@@ -17,14 +17,14 @@ document.addEventListener('fullscreenchange', () => {
                 <path d="M4 14h6v6m10-6h-6v6M4 10h6V4m10 6h-6V4"/>
             </svg>
         `;
-        fullscreenBtn.classList.add('active');
+        // fullscreenBtn remains dimmed unless hovered
     } else {
         fullscreenBtn.innerHTML = `
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
             </svg>
         `;
-        fullscreenBtn.classList.remove('active');
+        //
     }
 });
 
@@ -224,5 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (clockSize) clockSize.addEventListener('input', (e) => { settings.clockSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
     if (dateSize) dateSize.addEventListener('input', (e) => { settings.dateSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
+    const clockGap = document.getElementById('clock-gap-range');
+    if (clockGap) clockGap.addEventListener('input', (e) => { settings.clockGap = parseInt(e.target.value); saveSettings(); applyFonts(); });
+
 });
 

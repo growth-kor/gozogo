@@ -46,5 +46,6 @@ function applyFonts() {
         const isSerif = serifFonts.includes(settings.dateFont);
         clockDate.style.fontFamily = `"${settings.dateFont}", ${isSerif ? 'serif' : 'sans-serif'}`;
         clockDate.style.fontSize = `${settings.dateSize}px`;
+        clockDate.style.marginBottom = `${settings.clockGap !== undefined ? settings.clockGap : 6}px`;
     }
 }

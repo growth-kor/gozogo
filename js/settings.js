@@ -53,6 +53,8 @@ function updateSettingsUI() {
     const dateSizeRange = document.getElementById('date-size-range');
     if (clockSizeRange) clockSizeRange.value = settings.clockSize;
     if (dateSizeRange) dateSizeRange.value = settings.dateSize;
+    const clockGapRange = document.getElementById('clock-gap-range');
+    if (clockGapRange) clockGapRange.value = settings.clockGap !== undefined ? settings.clockGap : 6;
     
     updateBackgroundFilter();
 }
