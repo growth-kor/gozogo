@@ -533,18 +533,45 @@ body, html {
     font-family: 'Zodiak', serif;
     font-size: 110px;
     font-weight: 400;
-    letter-spacing: -3px;
+    letter-spacing: -2px;
     color: var(--text-primary);
     background: none;
     -webkit-background-clip: unset;
     background-clip: unset;
     -webkit-text-fill-color: initial;
     -webkit-text-stroke: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
     transition: transform 0.05s linear;
     font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
     overflow: visible !important;
     backface-visibility: hidden;
+}
+
+.time-digit {
+    display: inline-block;
+    width: 1ch;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    flex-shrink: 0;
+}
+
+.time-colon {
+    display: inline-block;
+    width: 0.35ch;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.clock-ampm {
+    font-size: 0.45em;
+    font-weight: 500;
+    vertical-align: middle;
+    margin-right: 12px;
+    flex-shrink: 0;
 }
 
 #clock-card.shrinking {

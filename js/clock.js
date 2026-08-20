@@ -12,20 +12,26 @@ function updateClock() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     
-    let ampm = '';
+    let ampmHtml = '';
     if (!settings.use24h) {
-        ampm = hours >= 12 ? 'PM ' : 'AM ';
+        const ampmText = hours >= 12 ? 'PM' : 'AM';
+        ampmHtml = `<span class="clock-ampm">${ampmText}</span>`;
         hours = hours % 12;
         hours = hours ? hours : 12;
     }
     
     const formattedHours = String(hours).padStart(2, '0');
-    let timeString = `${formattedHours}:${minutes}`;
+    let parts = [
+        `<span class="time-digit">${formattedHours[0]}</span><span class="time-digit">${formattedHours[1]}</span>`,
+        `<span class="time-digit">${minutes[0]}</span><span class="time-digit">${minutes[1]}</span>`
+    ];
+    
     if (settings.showSeconds) {
-        timeString += `:${seconds}`;
+        parts.push(`<span class="time-digit">${seconds[0]}</span><span class="time-digit">${seconds[1]}</span>`);
     }
     
-    clockTime.innerHTML = ampm ? `<span style="font-size: 0.45em; font-weight: 500; vertical-align: middle; margin-right: 8px;">${ampm}</span>${timeString}` : timeString;
+    const timeHtml = parts.join('<span class="time-colon">:</span>');
+    clockTime.innerHTML = ampmHtml ? `${ampmHtml}${timeHtml}` : timeHtml;
 }
 
 setInterval(updateClock, 1000);
