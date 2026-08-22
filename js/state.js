@@ -1,6 +1,7 @@
 const bgViewport = document.getElementById('bg-viewport');
 const bgImage = document.getElementById('bg-image');
 const bgVideo = document.getElementById('bg-video');
+const noSleepVideo = document.getElementById('nosleep-video');
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-input');
 const fileSelectBtn = document.querySelector('.file-select-btn');

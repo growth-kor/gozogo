@@ -162,6 +162,9 @@ function applyDirectUrl(url) {
 
 async function requestWakeLock() {
     try {
+        if (typeof noSleepVideo !== 'undefined' && noSleepVideo) {
+            noSleepVideo.play().catch(e => console.warn('NoSleep video play failed:', e));
+        }
         if ('wakeLock' in navigator) {
             wakeLockSentinel = await navigator.wakeLock.request('screen');
             wakeLockSentinel.addEventListener('release', () => {
@@ -169,7 +172,7 @@ async function requestWakeLock() {
             });
         }
     } catch (err) {
-        console.warn(err);
+        console.warn('WakeLock request failed:', err);
     }
 }
 

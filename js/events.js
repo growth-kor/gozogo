@@ -113,10 +113,19 @@ btnSongSelect.addEventListener('click', async () => {
 });
 
 document.addEventListener('visibilitychange', async () => {
-    if (document.visibilityState === 'visible' && currentState !== 'normal') {
+    if (document.visibilityState === 'visible' && currentState === 'normal') {
         await requestWakeLock();
     }
 });
+
+// 첫 화면 터치/클릭 시 WakeLock 및 무음 비디오(화면보호기 방지) 권한 자동 획득
+document.addEventListener('click', function initWakeLockOnInteraction() {
+    if (currentState === 'normal') {
+        requestWakeLock();
+    }
+    // 최초 1회 실행 후 리스너 제거
+    document.removeEventListener('click', initWakeLockOnInteraction);
+}, { once: true });
 
 initSettings();
 
