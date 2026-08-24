@@ -42,16 +42,21 @@ function applyFonts() {
     const clockTime = document.getElementById('clock-time');
     const clockDate = document.getElementById('clock-date');
     const serifFonts = ['Zodiak', 'Cinzel', 'Italiana'];
+    const color = settings.clockColor || '#ffffff';
     
     if (clockTime) {
         const isSerif = serifFonts.includes(settings.clockFont);
         clockTime.style.fontFamily = `"${settings.clockFont}", ${isSerif ? 'serif' : 'sans-serif'}`;
         clockTime.style.fontSize = `${settings.clockSize}px`;
+        clockTime.style.color = color;
     }
     if (clockDate) {
         const isSerif = serifFonts.includes(settings.dateFont);
         clockDate.style.fontFamily = `"${settings.dateFont}", ${isSerif ? 'serif' : 'sans-serif'}`;
         clockDate.style.fontSize = `${settings.dateSize}px`;
         clockDate.style.marginBottom = `${settings.clockGap !== undefined ? settings.clockGap : 6}px`;
+        clockDate.style.color = color;
     }
 }
+
+applyFonts();

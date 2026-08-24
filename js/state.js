@@ -36,6 +36,7 @@ let settings = {
     use24h: true,
     showSeconds: true,
     clockGap: 6,
+    clockColor: '#ffffff',
     brightness: 100, 
     blur: 0,
     lastAppliedUrl: null,

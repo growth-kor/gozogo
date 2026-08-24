@@ -261,5 +261,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const clockGap = document.getElementById('clock-gap-range');
     if (clockGap) clockGap.addEventListener('input', (e) => { settings.clockGap = parseInt(e.target.value); saveSettings(); applyFonts(); });
 
+    // Color Preset Buttons
+    document.querySelectorAll('.color-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const chosenColor = btn.getAttribute('data-color');
+            settings.clockColor = chosenColor;
+            saveSettings();
+            applyFonts();
+            updateSettingsUI();
+        });
+    });
+
+    // Custom Color Picker
+    const clockColorPicker = document.getElementById('clock-color-picker');
+    if (clockColorPicker) {
+        clockColorPicker.addEventListener('input', (e) => {
+            settings.clockColor = e.target.value;
+            saveSettings();
+            applyFonts();
+            updateSettingsUI();
+        });
+    }
+
 });
 
