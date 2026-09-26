@@ -2,7 +2,7 @@ function transitionToWallpaper() {
     dropZone.classList.remove('active');
     clockContainer.style.display = 'flex';
     clockCard.classList.remove('shrinking');
-    clockCard.style.opacity = 1;
+    clockCard.style.opacity = (settings.clockOpacity !== undefined ? settings.clockOpacity : 100) / 100;
     clockCard.style.transform = 'scale(1)';
     soulOrb.style.display = 'none';
     

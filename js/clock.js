@@ -39,11 +39,16 @@ updateClock();
 
 
 function applyFonts() {
+    const clockCard = document.getElementById('clock-card');
     const clockTime = document.getElementById('clock-time');
     const clockDate = document.getElementById('clock-date');
     const serifFonts = ['Zodiak', 'Cinzel', 'Italiana'];
     const color = settings.clockColor || '#ffffff';
+    const opacity = (settings.clockOpacity !== undefined ? settings.clockOpacity : 100) / 100;
     
+    if (clockCard) {
+        clockCard.style.opacity = opacity;
+    }
     if (clockTime) {
         const isSerif = serifFonts.includes(settings.clockFont);
         clockTime.style.fontFamily = `"${settings.clockFont}", ${isSerif ? 'serif' : 'sans-serif'}`;

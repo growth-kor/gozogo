@@ -260,6 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dateSize) dateSize.addEventListener('input', (e) => { settings.dateSize = parseInt(e.target.value); saveSettings(); applyFonts(); });
     const clockGap = document.getElementById('clock-gap-range');
     if (clockGap) clockGap.addEventListener('input', (e) => { settings.clockGap = parseInt(e.target.value); saveSettings(); applyFonts(); });
+    const clockBrightnessInput = document.getElementById('clock-brightness-range');
+    if (clockBrightnessInput) clockBrightnessInput.addEventListener('input', (e) => { settings.clockOpacity = parseInt(e.target.value); saveSettings(); applyFonts(); });
 
     // Color Preset Buttons
     document.querySelectorAll('.color-preset-btn').forEach(btn => {

@@ -27,6 +27,7 @@ const btnFormat24 = document.getElementById('btn-format-24');
 const btnFormat12 = document.getElementById('btn-format-12');
 const toggleSeconds = document.getElementById('toggle-seconds');
 
+const clockBrightnessRange = document.getElementById('clock-brightness-range');
 const brightnessRange = document.getElementById('brightness-range');
 const blurRange = document.getElementById('blur-range');
 const musicVolume = document.getElementById('music-volume');
@@ -37,6 +38,7 @@ let settings = {
     showSeconds: true,
     clockGap: 6,
     clockColor: '#ffffff',
+    clockOpacity: 100,
     brightness: 100, 
     blur: 0,
     lastAppliedUrl: null,

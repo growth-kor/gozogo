@@ -27,6 +27,7 @@ async function initSettings() {
     if (!settings.clockFont) settings.clockFont = 'Zodiak';
     if (!settings.dateFont) settings.dateFont = 'Zodiak';
     if (!settings.clockColor) settings.clockColor = '#ffffff';
+    if (settings.clockOpacity === undefined || isNaN(settings.clockOpacity)) settings.clockOpacity = 100;
     updateSettingsUI();
     if (typeof applyFonts === 'function') {
         applyFonts();
@@ -59,6 +60,9 @@ function updateSettingsUI() {
     if (dateSizeRange) dateSizeRange.value = settings.dateSize;
     const clockGapRange = document.getElementById('clock-gap-range');
     if (clockGapRange) clockGapRange.value = settings.clockGap !== undefined ? settings.clockGap : 6;
+    
+    const clockBrightnessInput = document.getElementById('clock-brightness-range');
+    if (clockBrightnessInput) clockBrightnessInput.value = settings.clockOpacity !== undefined ? settings.clockOpacity : 100;
     
     // Clock Color UI update
     const colorPicker = document.getElementById('clock-color-picker');
